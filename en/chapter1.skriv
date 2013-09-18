@@ -2,7 +2,37 @@ How to use our framework to build easily a back office website
 
 ------
 
+=== Context
+==== Configuration
+[[[ yml
+bigfoot_context:
+    # A list of entities to mark as "can be contextualized".
+    # You can add multiple classes at once using a namespace prefix.
+    # For example, adding Bigfoot\ means every entity which namespace begins with Bigfoot\ will be contextualizable.
+    entities:
+        - "Bigfoot\\"
+    # A list of contexts.
+    # The name used for each context is relevant and will be used to identify a context.
+    contexts:
+        language:
+            # A list of context loaders that will be called successively, in the order they appear in the configuration, to determine what is the current context during the navigation.
+            loaders:
+                back:       "bigfoot_language_loader"
+            # A list of label / value representing each individual context.
+            values:
+                fr:
+                    label:  "French"
+                    value:  "fr"
+                en:
+                    label:  "English"
+                    value:  "en"
+            # The default value for this context.
+            default_value:  %locale%
+            # String representation for the context.
+            label:          "Language"
+]]]
 
+=== General
 ==== Generating CRUD in Bigfoot
 * Have an existing doctrine entity (in the Entity/ folder in a Bundle) by creating it yourself or using the generate:doctrine:entity command
 * use generate:bigfoot:crud. It works exactly like doctrine:generate:crud (It actually extends that command and uses its own templates to generate files)
