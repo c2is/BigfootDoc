@@ -61,6 +61,24 @@
 <a href="chapter1.html#-"></a>
 <ul class="toc-list">
 <li class="toc-entry">
+<a href="chapter1.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter1.html#Context-loaders">Context loaders</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-entry">
+<a href="chapter1.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter1.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
 <a href="chapter1.html#General">General</a>
 </li>
 </ul>
@@ -181,6 +199,11 @@
 <h3 id="Context">Context</h3>
 <h4 id="Configuration">Configuration</h4>
 <pre class="language-yml"><ol><li class="li1"><div class="de1">bigfoot_context:</div></li><li class="li1"><div class="de1">    # A list of entities to mark as &quot;can be contextualized&quot;.</div></li><li class="li1"><div class="de1">    # You can add multiple classes at once using a namespace prefix.</div></li><li class="li1"><div class="de1">    # For example, adding Bigfoot\ means every entity which namespace begins with Bigfoot\ will be contextualizable.</div></li><li class="li1"><div class="de1">    entities:</div></li><li class="li1"><div class="de1">        - &quot;Bigfoot\\&quot;</div></li><li class="li1"><div class="de1">    # A list of contexts.</div></li><li class="li1"><div class="de1">    # The name used for each context is relevant and will be used to identify a context.</div></li><li class="li1"><div class="de1">    contexts:</div></li><li class="li1"><div class="de1">        language:</div></li><li class="li1"><div class="de1">            # A list of context loaders that will be called successively, in the order they appear in the configuration, to determine what is the current context during the navigation.</div></li><li class="li1"><div class="de1">            loaders:</div></li><li class="li1"><div class="de1">                back:       &quot;bigfoot_language_loader&quot;</div></li><li class="li1"><div class="de1">            # A list of label / value representing each individual context.</div></li><li class="li1"><div class="de1">            values:</div></li><li class="li1"><div class="de1">                fr:</div></li><li class="li1"><div class="de1">                    label:  &quot;French&quot;</div></li><li class="li1"><div class="de1">                    value:  &quot;fr&quot;</div></li><li class="li1"><div class="de1">                en:</div></li><li class="li1"><div class="de1">                    label:  &quot;English&quot;</div></li><li class="li1"><div class="de1">                    value:  &quot;en&quot;</div></li><li class="li1"><div class="de1">            # The default value for this context.</div></li><li class="li1"><div class="de1">            default_value:  %locale%</div></li><li class="li1"><div class="de1">            # String representation for the context.</div></li><li class="li1"><div class="de1">            label:          &quot;Language&quot;</div></li></ol></pre>
+
+<h4 id="Context-loaders">Context loaders</h4>
+<p>Context loaders must be placed in the ContextLoaders/ folder in your bundle.
+<br />They must extend Bigfoot\Bundle\ContextBundle\Model\AbstractContextLoader and implement the methodes getName() (returns a string corresponding to the name of one of the contexts in the bundle configuration) and getValue() (returns the current value for the context).
+<br />If a context loader returns a false equivalent value, the next loader will be called, until all loaders have been called. If no context value is found, the default_value set in the bundle configuration for that context will be used.</p>
 
 <h3 id="General">General</h3>
 <h4 id="Generating-CRUD-in-Bigfoot">Generating CRUD in Bigfoot</h4>
