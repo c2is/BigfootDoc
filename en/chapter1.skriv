@@ -57,10 +57,8 @@ Menu items in Bigfoot are added by Listeners. It allows any Bundle to register i
 *** actions_menu: Menu used in listings to allow for custom actions on the current list (add item, export ...)
 
 Example :
+Acme/Bundle/MyBundle/Listener/MenuListener.php
 [[[ php
-	Acme/Bundle/MyBundle/Listener/MenuListener.php
-	<?php
-	
 	namespace Acme\BundleMyBundle\Listener;
 	
 	use Bigfoot\Bundle\CoreBundle\Event\MenuEvent;
@@ -83,10 +81,19 @@ Example :
 	}
 ]]]
 
+Acme/Bundle/MyBundle/Resources/config/services.yml
 [[[ yml	
-	Acme/Bundle/MyBundle/Resources/config/services.yml
 	kernel.listener.my_menu_listener:
 	        class: Acme/Bundle/MyBundle/Listener/MenuListener
 	        tags:
 	            - { name: kernel.event_listener, event: bigfoot.menu.generate, method: onMenuGenerate }
 ]]]
+
+==== Store translations in database
+You can persist Bigfoot\Bundle\CoreBundle\Entity\TranslatableLabel entities and have them available as translations in sf2 :
+TranslatableLabel->domain : The domain for this label (defaults to "messages").
+TranslatableLabel->locale : The locale for this label.
+TranslatableLabel->name : Identifier of the label - eg a label named "homepage.title" will be matched when using {{ 'homepage.title' | trans }} in a twig template.
+TranslatableLabel->value : The translated value to display.
+
+For it to work, you must add translation files into your app/Resources/translations directory named "<domain>.<locale>.db", eg : messages.en.db or Sf2 won't load your translations.
