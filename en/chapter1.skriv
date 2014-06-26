@@ -2,7 +2,42 @@ How to use our framework to build easily a back office website
 
 ------
 
+=== Context
+==== Configuration
+[[[ yml
+bigfoot_context:
+    # A list of entities to mark as "can be contextualized".
+    # You can add multiple classes at once using a namespace prefix.
+    # For example, adding Bigfoot\ means every entity which namespace begins with Bigfoot\ will be contextualizable.
+    entities:
+        - "Bigfoot\\"
+    # A list of contexts.
+    # The name used for each context is relevant and will be used to identify a context.
+    contexts:
+        language:
+            # A list of context loaders that will be called successively, in the order they appear in the configuration, to determine what is the current context during the navigation.
+            loaders:
+                back:       "bigfoot_language_loader"
+            # A list of label / value representing each individual context.
+            values:
+                fr:
+                    label:  "French"
+                    value:  "fr"
+                en:
+                    label:  "English"
+                    value:  "en"
+            # The default value for this context.
+            default_value:  %locale%
+            # String representation for the context.
+            label:          "Language"
+]]]
 
+==== Context loaders
+Context loaders must be placed in the ContextLoaders/ folder in your bundle.
+They must extend Bigfoot\Bundle\ContextBundle\Model\AbstractContextLoader and implement the methodes getName() (returns a string corresponding to the name of one of the contexts in the bundle configuration) and getValue() (returns the current value for the context).
+If a context loader returns a false equivalent value, the next loader will be called, until all loaders have been called. If no context value is found, the default_value set in the bundle configuration for that context will be used.
+
+=== General
 ==== Generating CRUD in Bigfoot
 * Have an existing doctrine entity (in the Entity/ folder in a Bundle) by creating it yourself or using the generate:doctrine:entity command
 * use generate:bigfoot:crud. It works exactly like doctrine:generate:crud (It actually extends that command and uses its own templates to generate files)
@@ -22,10 +57,8 @@ Menu items in Bigfoot are added by Listeners. It allows any Bundle to register i
 *** actions_menu: Menu used in listings to allow for custom actions on the current list (add item, export ...)
 
 Example :
+Acme/Bundle/MyBundle/Listener/MenuListener.php
 [[[ php
-	Acme/Bundle/MyBundle/Listener/MenuListener.php
-	<?php
-	
 	namespace Acme\BundleMyBundle\Listener;
 	
 	use Bigfoot\Bundle\CoreBundle\Event\MenuEvent;
@@ -48,10 +81,19 @@ Example :
 	}
 ]]]
 
+Acme/Bundle/MyBundle/Resources/config/services.yml
 [[[ yml	
-	Acme/Bundle/MyBundle/Resources/config/services.yml
 	kernel.listener.my_menu_listener:
 	        class: Acme/Bundle/MyBundle/Listener/MenuListener
 	        tags:
 	            - { name: kernel.event_listener, event: bigfoot.menu.generate, method: onMenuGenerate }
 ]]]
+
+==== Store translations in database
+You can persist Bigfoot\Bundle\CoreBundle\Entity\TranslatableLabel entities and have them available as translations in sf2 :
+TranslatableLabel->domain : The domain for this label (defaults to "messages").
+TranslatableLabel->locale : The locale for this label.
+TranslatableLabel->name : Identifier of the label - eg a label named "homepage.title" will be matched when using {{ 'homepage.title' | trans }} in a twig template.
+TranslatableLabel->value : The translated value to display.
+
+For it to work, you must add translation files into your app/Resources/translations directory named "<domain>.<locale>.db", eg : messages.en.db or Sf2 won't load your translations.

@@ -30,6 +30,68 @@
 <a href="chapter1.html#-"></a>
 <ul class="toc-list">
 <li class="toc-entry">
+<a href="chapter1.html#Context">Context</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-entry">
+<a href="chapter1.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter1.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter1.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter1.html#Configuration">Configuration</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-entry">
+<a href="chapter1.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter1.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter1.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter1.html#Context-loaders">Context loaders</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-entry">
+<a href="chapter1.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter1.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter1.html#General">General</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-entry">
+<a href="chapter1.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter1.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
 <a href="chapter1.html#-"></a>
 <ul class="toc-list">
 <li class="toc-entry">
@@ -59,6 +121,87 @@
 </li>
 </ul>
 </li>
+<li class="toc-entry">
+<a href="chapter1.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter1.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter1.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter1.html#Store-translations-in-database">Store translations in database</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter2.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter2.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter2.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter2.html#TOTo">TOTo</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-entry">
+<a href="chapter2.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter2.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter2.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter2.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter2.html#qsd">qsd</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter3.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter3.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter3.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter3.html#Page-3">Page 3</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 
         </aside>
@@ -71,7 +214,16 @@
 
 <hr />
 
+<h3 id="Context">Context</h3>
+<h4 id="Configuration">Configuration</h4>
+<pre class="language-yml"><ol><li class="li1"><div class="de1">bigfoot_context:</div></li><li class="li1"><div class="de1">    # A list of entities to mark as &quot;can be contextualized&quot;.</div></li><li class="li1"><div class="de1">    # You can add multiple classes at once using a namespace prefix.</div></li><li class="li1"><div class="de1">    # For example, adding Bigfoot\ means every entity which namespace begins with Bigfoot\ will be contextualizable.</div></li><li class="li1"><div class="de1">    entities:</div></li><li class="li1"><div class="de1">        - &quot;Bigfoot\\&quot;</div></li><li class="li1"><div class="de1">    # A list of contexts.</div></li><li class="li1"><div class="de1">    # The name used for each context is relevant and will be used to identify a context.</div></li><li class="li1"><div class="de1">    contexts:</div></li><li class="li1"><div class="de1">        language:</div></li><li class="li1"><div class="de1">            # A list of context loaders that will be called successively, in the order they appear in the configuration, to determine what is the current context during the navigation.</div></li><li class="li1"><div class="de1">            loaders:</div></li><li class="li1"><div class="de1">                back:       &quot;bigfoot_language_loader&quot;</div></li><li class="li1"><div class="de1">            # A list of label / value representing each individual context.</div></li><li class="li1"><div class="de1">            values:</div></li><li class="li1"><div class="de1">                fr:</div></li><li class="li1"><div class="de1">                    label:  &quot;French&quot;</div></li><li class="li1"><div class="de1">                    value:  &quot;fr&quot;</div></li><li class="li1"><div class="de1">                en:</div></li><li class="li1"><div class="de1">                    label:  &quot;English&quot;</div></li><li class="li1"><div class="de1">                    value:  &quot;en&quot;</div></li><li class="li1"><div class="de1">            # The default value for this context.</div></li><li class="li1"><div class="de1">            default_value:  %locale%</div></li><li class="li1"><div class="de1">            # String representation for the context.</div></li><li class="li1"><div class="de1">            label:          &quot;Language&quot;</div></li></ol></pre>
 
+<h4 id="Context-loaders">Context loaders</h4>
+<p>Context loaders must be placed in the ContextLoaders/ folder in your bundle.
+<br />They must extend Bigfoot\Bundle\ContextBundle\Model\AbstractContextLoader and implement the methodes getName() (returns a string corresponding to the name of one of the contexts in the bundle configuration) and getValue() (returns the current value for the context).
+<br />If a context loader returns a false equivalent value, the next loader will be called, until all loaders have been called. If no context value is found, the default_value set in the bundle configuration for that context will be used.</p>
+
+<h3 id="General">General</h3>
 <h4 id="Generating-CRUD-in-Bigfoot">Generating CRUD in Bigfoot</h4>
 <ul>
 <li>Have an existing doctrine entity (in the Entity/ folder in a Bundle) by creating it yourself or using the generate:doctrine:entity command
@@ -105,11 +257,21 @@
 </li></ul>
 
 
-<p>Example :</p>
-<pre class="language-php"><ol><li class="li1"><div class="de1">	Acme/Bundle/MyBundle/Listener/MenuListener.php</div></li><li class="li1"><div class="de1">	<span class="kw2">&lt;?php</span></div></li><li class="li1"><div class="de1">&nbsp;</div></li><li class="li1"><div class="de1">	<span class="kw2">namespace</span> Acme\BundleMyBundle\Listener<span class="sy0">;</span></div></li><li class="li1"><div class="de1">&nbsp;</div></li><li class="li1"><div class="de1">	<span class="kw2">use</span> Bigfoot\Bundle\CoreBundle\Event\MenuEvent<span class="sy0">;</span></div></li><li class="li1"><div class="de1">	<span class="kw2">use</span> Bigfoot\Bundle\CoreBundle\Theme\Menu\Item<span class="sy0">;</span></div></li><li class="li1"><div class="de1">&nbsp;</div></li><li class="li1"><div class="de1">	<span class="kw2">class</span> MenuListener</div></li><li class="li1"><div class="de1">	<span class="br0">&#123;</span></div></li><li class="li1"><div class="de1">	    <span class="co4">/**</span></div></li><li class="li1"><div class="de1"><span class="co4">	     * @param MenuEvent $event</span></div></li><li class="li1"><div class="de1"><span class="co4">	     */</span></div></li><li class="li1"><div class="de1">	    <span class="kw2">public</span> <span class="kw2">function</span> onMenuGenerate<span class="br0">&#40;</span>MenuEvent <span class="re0">$event</span><span class="br0">&#41;</span></div></li><li class="li1"><div class="de1">	    <span class="br0">&#123;</span></div></li><li class="li1"><div class="de1">	        <span class="re0">$menu</span> <span class="sy0">=</span> <span class="re0">$event</span><span class="sy0">-&gt;</span><span class="me1">getMenu</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span></div></li><li class="li1"><div class="de1">	        <span class="kw1">if</span> <span class="br0">&#40;</span><span class="st_h">'sidebar_menu'</span> <span class="sy0">==</span> <span class="re0">$menu</span><span class="sy0">-&gt;</span><span class="me1">getName</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span></div></li><li class="li1"><div class="de1">	            <span class="re0">$navigation</span> <span class="sy0">=</span> <span class="kw2">new</span> Item<span class="br0">&#40;</span><span class="st_h">'sidebar_mymenu'</span><span class="sy0">,</span> <span class="st_h">'My menu'</span><span class="br0">&#41;</span><span class="sy0">;</span></div></li><li class="li1"><div class="de1">	            <span class="re0">$navigation</span><span class="sy0">-&gt;</span><span class="me1">addChild</span><span class="br0">&#40;</span><span class="kw2">new</span> Item<span class="br0">&#40;</span><span class="st_h">'sidebar_mymenu_mysubmenu'</span><span class="sy0">,</span> <span class="st_h">'My submenu'</span><span class="sy0">,</span> <span class="st_h">'my_route'</span><span class="br0">&#41;</span><span class="br0">&#41;</span><span class="sy0">;</span></div></li><li class="li1"><div class="de1">	            <span class="re0">$menu</span><span class="sy0">-&gt;</span><span class="me1">addItem</span><span class="br0">&#40;</span><span class="re0">$navigation</span><span class="br0">&#41;</span><span class="sy0">;</span></div></li><li class="li1"><div class="de1">	        <span class="br0">&#125;</span></div></li><li class="li1"><div class="de1">	    <span class="br0">&#125;</span></div></li><li class="li1"><div class="de1">	<span class="br0">&#125;</span></div></li></ol></pre>
+<p>Example :
+<br />Acme/Bundle/MyBundle/Listener/MenuListener.php</p>
+<pre class="language-php"><ol><li class="li1"><div class="de1">	<span class="kw2">namespace</span> Acme\BundleMyBundle\Listener<span class="sy0">;</span></div></li><li class="li1"><div class="de1">&nbsp;</div></li><li class="li1"><div class="de1">	<span class="kw2">use</span> Bigfoot\Bundle\CoreBundle\Event\MenuEvent<span class="sy0">;</span></div></li><li class="li1"><div class="de1">	<span class="kw2">use</span> Bigfoot\Bundle\CoreBundle\Theme\Menu\Item<span class="sy0">;</span></div></li><li class="li1"><div class="de1">&nbsp;</div></li><li class="li1"><div class="de1">	<span class="kw2">class</span> MenuListener</div></li><li class="li1"><div class="de1">	<span class="br0">&#123;</span></div></li><li class="li1"><div class="de1">	    <span class="co4">/**</span></div></li><li class="li1"><div class="de1"><span class="co4">	     * @param MenuEvent $event</span></div></li><li class="li1"><div class="de1"><span class="co4">	     */</span></div></li><li class="li1"><div class="de1">	    <span class="kw2">public</span> <span class="kw2">function</span> onMenuGenerate<span class="br0">&#40;</span>MenuEvent <span class="re0">$event</span><span class="br0">&#41;</span></div></li><li class="li1"><div class="de1">	    <span class="br0">&#123;</span></div></li><li class="li1"><div class="de1">	        <span class="re0">$menu</span> <span class="sy0">=</span> <span class="re0">$event</span><span class="sy0">-&gt;</span><span class="me1">getMenu</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span></div></li><li class="li1"><div class="de1">	        <span class="kw1">if</span> <span class="br0">&#40;</span><span class="st_h">'sidebar_menu'</span> <span class="sy0">==</span> <span class="re0">$menu</span><span class="sy0">-&gt;</span><span class="me1">getName</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span></div></li><li class="li1"><div class="de1">	            <span class="re0">$navigation</span> <span class="sy0">=</span> <span class="kw2">new</span> Item<span class="br0">&#40;</span><span class="st_h">'sidebar_mymenu'</span><span class="sy0">,</span> <span class="st_h">'My menu'</span><span class="br0">&#41;</span><span class="sy0">;</span></div></li><li class="li1"><div class="de1">	            <span class="re0">$navigation</span><span class="sy0">-&gt;</span><span class="me1">addChild</span><span class="br0">&#40;</span><span class="kw2">new</span> Item<span class="br0">&#40;</span><span class="st_h">'sidebar_mymenu_mysubmenu'</span><span class="sy0">,</span> <span class="st_h">'My submenu'</span><span class="sy0">,</span> <span class="st_h">'my_route'</span><span class="br0">&#41;</span><span class="br0">&#41;</span><span class="sy0">;</span></div></li><li class="li1"><div class="de1">	            <span class="re0">$menu</span><span class="sy0">-&gt;</span><span class="me1">addItem</span><span class="br0">&#40;</span><span class="re0">$navigation</span><span class="br0">&#41;</span><span class="sy0">;</span></div></li><li class="li1"><div class="de1">	        <span class="br0">&#125;</span></div></li><li class="li1"><div class="de1">	    <span class="br0">&#125;</span></div></li><li class="li1"><div class="de1">	<span class="br0">&#125;</span></div></li></ol></pre>
 
-<pre class="language-yml"><ol><li class="li1"><div class="de1">	Acme/Bundle/MyBundle/Resources/config/services.yml</div></li><li class="li1"><div class="de1">	kernel.listener.my_menu_listener:</div></li><li class="li1"><div class="de1">	        class: Acme/Bundle/MyBundle/Listener/MenuListener</div></li><li class="li1"><div class="de1">	        tags:</div></li><li class="li1"><div class="de1">	            - { name: kernel.event_listener, event: bigfoot.menu.generate, method: onMenuGenerate }</div></li></ol></pre>
+<p>Acme/Bundle/MyBundle/Resources/config/services.yml</p>
+<pre class="language-yml"><ol><li class="li1"><div class="de1">	kernel.listener.my_menu_listener:</div></li><li class="li1"><div class="de1">	        class: Acme/Bundle/MyBundle/Listener/MenuListener</div></li><li class="li1"><div class="de1">	        tags:</div></li><li class="li1"><div class="de1">	            - { name: kernel.event_listener, event: bigfoot.menu.generate, method: onMenuGenerate }</div></li></ol></pre>
 
+<h4 id="Store-translations-in-database">Store translations in database</h4>
+<p>You can persist Bigfoot\Bundle\CoreBundle\Entity\TranslatableLabel entities and have them available as translations in sf2 :
+<br />TranslatableLabel-&gt;domain : The domain for this label (defaults to &quot;messages&quot;).
+<br />TranslatableLabel-&gt;locale : The locale for this label.
+<br />TranslatableLabel-&gt;name : Identifier of the label - eg a label named &quot;homepage.title&quot; will be matched when using <img src="trans" alt="'homepage.title'" /> in a twig template.
+<br />TranslatableLabel-&gt;value : The translated value to display.</p>
+
+<p>For it to work, you must add translation files into your app/Resources/translations directory named &quot;&lt;domain&gt;.&lt;locale&gt;.db&quot;, eg : messages.en.db or Sf2 won't load your translations.</p>
 
             <footer>
 
