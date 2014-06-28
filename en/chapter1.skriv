@@ -82,7 +82,7 @@ Acme/Bundle/MyBundle/Listener/MenuListener.php
 ]]]
 
 Acme/Bundle/MyBundle/Resources/config/services.yml
-[[[ yml	
+[[[ yaml	
 	kernel.listener.my_menu_listener:
 	        class: Acme/Bundle/MyBundle/Listener/MenuListener
 	        tags:

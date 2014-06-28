@@ -140,6 +140,26 @@
 </ul>
 </li>
 </ul>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter3.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter3.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter3.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter3.html#Page-3">Page 3</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 
         </aside>
         <article id="page">
@@ -242,10 +262,10 @@
 	<span style="color: #009900;">&#125;</span></pre>
 
 <p>Acme/Bundle/MyBundle/Resources/config/services.yml</p>
-<pre class="language-yml" style="font-family:monospace;">	kernel.listener.my_menu_listener:
-	        class: Acme/Bundle/MyBundle/Listener/MenuListener
-	        tags:
-	            - { name: kernel.event_listener, event: bigfoot.menu.generate, method: onMenuGenerate }</pre>
+<pre class="language-yaml" style="font-family:monospace;"><span style="color: #007F45;">	kernel.listener.my_menu_listener</span>:<span style="color: green;">
+	        class</span><span style="font-weight: bold; color: brown;">: </span>Acme/Bundle/MyBundle/Listener/MenuListener<span style="color: #007F45;">
+	        tags</span>:<span style="color: green;">
+	            - { name</span><span style="font-weight: bold; color: brown;">: </span>kernel.event_listener, event<span style="font-weight: bold; color: brown;">: </span>bigfoot.menu.generate, method<span style="font-weight: bold; color: brown;">: </span>onMenuGenerate <span class="br0">&#125;</span></pre>
 
 <h4 id="Store-translations-in-database">Store translations in database</h4>
 <p>You can persist Bigfoot\Bundle\CoreBundle\Entity\TranslatableLabel entities and have them available as translations in sf2 :
