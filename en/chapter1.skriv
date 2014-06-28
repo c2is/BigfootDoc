@@ -4,7 +4,7 @@ How to use our framework to build easily a back office website
 
 === Context
 ==== Configuration
-[[[ yml
+[[[ yaml
 bigfoot_context:
     # A list of entities to mark as "can be contextualized".
     # You can add multiple classes at once using a namespace prefix.
