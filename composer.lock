@@ -1,0 +1,202 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "1abab7d0c74451275330f664cc511c41",
+    "packages": [
+        {
+            "name": "amaury/skrivmarkup",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Amaury/SkrivMarkup.git",
+                "reference": "7e7da9370ba694acb1ffd5857ee55158ae863a31"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Amaury/SkrivMarkup/zipball/7e7da9370ba694acb1ffd5857ee55158ae863a31",
+                "reference": "7e7da9370ba694acb1ffd5857ee55158ae863a31",
+                "shasum": ""
+            },
+            "require": {
+                "amaury/wikirenderer": "dev-master",
+                "php": ">=5.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Skriv\\Markup": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-2.1"
+            ],
+            "authors": [
+                {
+                    "name": "Amaury Bouchard",
+                    "email": "amaury@amaury.net",
+                    "homepage": "http://amaury.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Interpreter of the Skriv Markup Language. PHP implementation.",
+            "keywords": [
+                "Skriv",
+                "wiki"
+            ],
+            "time": "2013-09-08 16:24:15"
+        },
+        {
+            "name": "amaury/wikirenderer",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Amaury/wikirenderer.git",
+                "reference": "816968b749e387c5ce027295ce55ca5523f0e609"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Amaury/wikirenderer/zipball/816968b749e387c5ce027295ce55ca5523f0e609",
+                "reference": "816968b749e387c5ce027295ce55ca5523f0e609",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "WikiRenderer": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-2.1"
+            ],
+            "authors": [
+                {
+                    "name": "Laurent Jouanneau",
+                    "email": "ljouanneau@gmail.com",
+                    "homepage": "http://ljouanneau.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "WikiRenderer is a library to generate HTML (or anything else) from wiki content.",
+            "homepage": "http://wikirenderer.jelix.org",
+            "keywords": [
+                "wiki"
+            ],
+            "time": "2013-02-10 12:11:38"
+        },
+        {
+            "name": "easybook/geshi",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/easybook/geshi.git",
+                "reference": "223c3ac0964472ef19027a064eef23ab0689c602"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/easybook/geshi/zipball/223c3ac0964472ef19027a064eef23ab0689c602",
+                "reference": "223c3ac0964472ef19027a064eef23ab0689c602",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">4.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "./"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Benny Baumann",
+                    "email": "BenBE@geshi.org",
+                    "homepage": "http://blog.benny-baumann.de/",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Nigel McNie",
+                    "email": "nigel@geshi.org"
+                }
+            ],
+            "description": "GeSHi - Generic Syntax Highlighter. This is an unmodified port of GeSHi project code found on SourceForge.",
+            "homepage": "http://qbnz.com/highlighter",
+            "keywords": [
+                "highlight",
+                "highlighter",
+                "syntax"
+            ],
+            "time": "2014-05-11 07:59:00"
+        },
+        {
+            "name": "symfony/process",
+            "version": "v2.2.11",
+            "target-dir": "Symfony/Component/Process",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/Process.git",
+                "reference": "b495834f2faadc533bdecf813f9ae8c509a4b52c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/Process/zipball/b495834f2faadc533bdecf813f9ae8c509a4b52c",
+                "reference": "b495834f2faadc533bdecf813f9ae8c509a4b52c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Symfony\\Component\\Process\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Process Component",
+            "homepage": "http://symfony.com",
+            "time": "2013-11-25 10:21:43"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "amaury/wikirenderer": 20,
+        "amaury/skrivmarkup": 20,
+        "easybook/geshi": 20
+    },
+    "platform": [],
+    "platform-dev": []
+}
