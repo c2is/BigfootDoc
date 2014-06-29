@@ -1,0 +1,147 @@
+
+=== Contextes
+C'est une fonctionnalité puissante de BigFoot, elle vous permet de facilement filtrer les données que peur voir un utilisateur. La gestion des langues utilise ce concept.
+
+==== Définition d'un contexte
+[[[ yaml
+# /app/config/bigfoot.yml
+bigfoot_context:
+    # Une liste d'entités à définir comme contextualisables.
+    # Vous pouvez définir plusieurs entités d'un coup en utilisant un préfixe d'espace de nom.
+    # Par exemple, indiquer Bigfoot\ signifie que chaque entité dont l'espace de nom commence par Bigfoot\ sera contextualisée.
+    entities:
+        - "Bigfoot\\"
+    # Une liste de contextes.
+    # Le nom utilisé pour chaque contexte est important car c'est lui qui permettra d'identifier le contexte.
+    contexts:
+        language:
+            # Une liste d'activateurs de contexte qui vont être appelés successivement, dans l'ordre défini ici même, pour déterminer quels sont les contextes courants durant la navigation.
+            loaders:
+                back:       "bigfoot_language_loader"
+            # Une liste d'intitulé/valeur représentant les filtres que peut activer ce contexte.
+            values:
+                fr:
+                    label:  "French"
+                    value:  "fr"
+                en:
+                    label:  "English"
+                    value:  "en"
+            # La valeur standard de ce contexte.
+            default_value:  %locale%
+            # Intitulé de ce contexte.
+            label:          "Language"
+]]]
+
+Une autre méthode existe pour définir les entitiés contextualisable : en annotation.
+==== Définition d'entités contextualisables en annotation
+
+[[[php
+# /src/Sandbox/MovieBundle/Entity/Movie.php
+use Bigfoot\Bundle\CoreBundle\Annotation\Bigfoot;
+/**
+ * Movie
+ *
+ * @ORM\Table(name="sandbox_movie")
+ * @ORM\Entity(repositoryClass="Sandbox\MovieBundle\Entity\MovieRepository")
+ * @Bigfoot\Context({"distributor"})
+ */
+class Movie
+{...}
+]]]
+
+==== Activateur de contexte
+Les activateurs de contextes doivent être placés dans le dossier ContextLoaders de votre bundle.
+Ils doivent étendre Bigfoot\Bundle\ContextBundle\Model\AbstractContextLoader et implementer la méthode getName() qui doit retourner une chaîne correspondant au nom du contexte défini dans la configuration ou l'annotation.
+Ils doivent également implémenter la méthode getValue() qui retourne la valeur courante du contexte. Si cette méthode retourne une valeur équivalente à false, l'activateur suivant va être appelé et ainsi de suite jusqu'au dernier activateur défini.
+Si aucune valeur n'est trouvée, c'est la valeur standard (définie dans la configuration) qui sera utilisée.
+
+Exemple : un activateur de contexte qui calcule sa valeur par rapport au sous-domaine courant.
+[[[php
+#/src/Sandbox/DistributorBundle/Loader/DistributorLoader.php
+namespace Sandbox\DistributorBundle\Loader;
+use Bigfoot\Bundle\ContextBundle\Loader\AbstractLoader;
+
+/**
+ * Class LanguageLoader
+ * @package Bigfoot\Bundle\ContextBundle\ContextLoader
+ */
+class DistributorLoader extends AbstractLoader
+{
+    /**
+     * @return mixed
+     */
+    public function getValue()
+    {
+        $domain            = $this->getRequest()->getHttpHost();
+        $values            = explode(".", $domain);
+        $distributor       = array_shift($values);
+        $distributorValues = $this->getValueForKey($distributor);
+
+        return $distributorValues;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContextName()
+    {
+        return 'distributor';
+    }
+}
+]]]
+
+=== Ajout d'un menu
+Les items de menu sont enregistrés dans BigFoot via des Listeners. Cela permet à n'importe quel bundle d'enregistrer ses propres items de menu qui vont s'ajouter aux items fournis par les autres bundle.
+* Créer un listener :
+** les listeners doivent être placés dans le répertoire Listener/ de votre bundle et doivent écouter l'événement "bigfoot.menu.generate" event.
+** Cet événement utilise la class Bigfoot\Bundle\CoreBundle\Event\MenuEvent pour transmettre le menu au listener.
+** L'événement est déclenché par Bigfoot à chaque fois qu'il instancie un menu quelque part. Le fait d'ahouter votre item à un menu donné va l'ajouter sur tous les menus du back office. Pour ajouter votre item à un seul menu, vous devez indiquer le nom du menu.
+** En standard, le back office de BigFoot dispose des menus suivants :
+*** sidebar_menu: e menu principal situé dans la colonne de gauche.
+*** toolbar_menu: le menu situé dans la barre d'outil, il permet d'accéder aux informations utilisateurs et aux liens de paramétrage.
+*** actions_menu: menu utilisé dans les listes pour fournir des actions particulières dans la liste courante (ajouter un item, exporter...)
+
+Exemple :
+[[[ php
+#Acme/Bundle/MyBundle/Listener/MenuListener.php
+	namespace Acme\BundleMyBundle\Listener;
+	
+	use Bigfoot\Bundle\CoreBundle\Event\MenuEvent;
+	use Bigfoot\Bundle\CoreBundle\Theme\Menu\Item;
+	
+	class MenuListener
+	{
+	    /**
+	     * @param MenuEvent $event
+	     */
+	    public function onMenuGenerate(MenuEvent $event)
+	    {
+	        $menu = $event->getMenu();
+	        if ('sidebar_menu' == $menu->getName()) {
+	            $navigation = new Item('sidebar_mymenu', 'My menu');
+	            $navigation->addChild(new Item('sidebar_mymenu_mysubmenu', 'My submenu', 'my_route'));
+	            $menu->addItem($navigation);
+	        }
+	    }
+	}
+]]]
+
+[[[ yaml	
+#Acme/Bundle/MyBundle/Resources/config/services.yml
+	kernel.listener.my_menu_listener:
+	        class: Acme/Bundle/MyBundle/Listener/MenuListener
+	        tags:
+	            - { name: kernel.event_listener, event: bigfoot.menu.generate, method: onMenuGenerate }
+]]]
+
+=== Stockage des traductions en base de données
+Vous pouvez stocker en base vos entités de type Bigfoot\Bundle\CoreBundle\Entity\TranslatableLabel et en disposer en tant que traduction dans Symfony 2 :
+* TranslatableLabel->domain : La portée de l'intitulé ("messages" en standard).
+* TranslatableLabel->locale : L'identification de localisation pour cet intitulé.
+* TranslatableLabel->name : Identifiant de l'intitulé - ie un intitulé nommé "homepage.title" va être accessible de la manière suivante 
+[[[twig 
+{{ 'homepage.title' | trans }} 
+]]] dans un template Twig.
+* TranslatableLabel->value : La valeur traduite à afficher
+
+Pour que cela fonctionne, vous devez ajouter un fichier de traductions nommé "<domain>.<locale>.db" dans votre répertoire app/Resources/translations , ie : messages.en.db ou alors Symfony 2 ne chargera pas vos traductions.

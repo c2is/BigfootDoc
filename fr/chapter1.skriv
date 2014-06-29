@@ -11,149 +11,79 @@ Voici la liste non exhaustive de ses fonctionnalités natives :
 * gestion des contenus éditoriaux,
 * gestion des metadata SEO.
 
-=== Contextes
-C'est une fonctionnalité puissante de BigFoot, elle vous permet de facilement filtrer les données que peur voir un utilisateur. La gestion des langues utilise ce concept.
-
-==== Définition d'un contexte
-[[[ yaml
-# /app/config/bigfoot.yml
-bigfoot_context:
-    # Une liste d'entités à définir comme contextualisables.
-    # Vous pouvez définir plusieurs entités d'un coup en utilisant un préfixe d'espace de nom.
-    # Par exemple, indiquer Bigfoot\ signifie que chaque entité dont l'espace de nom commence par Bigfoot\ sera contextualisée.
-    entities:
-        - "Bigfoot\\"
-    # Une liste de contextes.
-    # Le nom utilisé pour chaque contexte est important car c'est lui qui permettra d'identifier le contexte.
-    contexts:
-        language:
-            # Une liste d'activateurs de contexte qui vont être appelés successivement, dans l'ordre défini ici même, pour déterminer quels sont les contextes courants durant la navigation.
-            loaders:
-                back:       "bigfoot_language_loader"
-            # Une liste d'intitulé/valeur représentant les filtres que peut activer ce contexte.
-            values:
-                fr:
-                    label:  "French"
-                    value:  "fr"
-                en:
-                    label:  "English"
-                    value:  "en"
-            # La valeur standard de ce contexte.
-            default_value:  %locale%
-            # Intitulé de ce contexte.
-            label:          "Language"
+=== Installation rapide
+[[[bash
+git clone git@github.com:c2is/Bigfoot.git your_project
+cd your_project
+curl -sS https://getcomposer.org/installer | php
+php composer.phar install
+./app/console doctrine:database:create
+./app/console doctrine:schema:update --force
+./app/console doctrine:fixtures:load
+sudo setfacl -R -m u:www-data:rwx -m u:`whoami`:rwx app/cache/
+sudo setfacl -dR -m u:www-data:rwx -m u:`whoami`:rwx app/cache/
+sudo setfacl -R -m u:www-data:rwx -m u:`whoami`:rwx app/logs/
+sudo setfacl -dR -m u:www-data:rwx -m u:`whoami`:rwx app/logs/
+./app/console bigfoot:theme:install (--symlink)
+./app/console assetic:dump --env=admin
+./app/console assetic:dump --env=admin_dev
 ]]]
 
-Une autre méthode existe pour définir les entitiés contextualisable : en annotation.
-==== Définition d'entités contextualisables en annotation
-
-[[[php
-# /src/Sandbox/MovieBundle/Entity/Movie.php
-use Bigfoot\Bundle\CoreBundle\Annotation\Bigfoot;
-/**
- * Movie
- *
- * @ORM\Table(name="sandbox_movie")
- * @ORM\Entity(repositoryClass="Sandbox\MovieBundle\Entity\MovieRepository")
- * @Bigfoot\Context({"distributor"})
- */
-class Movie
-{...}
+=== Installation détaillée
+Cloner le project
+[[[bash
+git clone git@github.com:c2is/Bigfoot.git your_project
 ]]]
 
-==== Activateur de contexte
-Les activateurs de contextes doivent être placés dans le dossier ContextLoaders de votre bundle.
-Ils doivent étendre Bigfoot\Bundle\ContextBundle\Model\AbstractContextLoader et implementer la méthode getName() qui doit retourner une chaîne correspondant au nom du contexte défini dans la configuration ou l'annotation.
-Ils doivent également implémenter la méthode getValue() qui retourne la valeur courante du contexte. Si cette méthode retourne une valeur équivalente à false, l'activateur suivant va être appelé et ainsi de suite jusqu'au dernier activateur défini.
-Si aucune valeur n'est trouvée, c'est la valeur standard (définie dans la configuration) qui sera utilisée.
-
-Exemple : un activateur de contexte qui calcule sa valeur par rapport au sous-domaine courant.
-[[[php
-#/src/Sandbox/DistributorBundle/Loader/DistributorLoader.php
-namespace Sandbox\DistributorBundle\Loader;
-use Bigfoot\Bundle\ContextBundle\Loader\AbstractLoader;
-
-/**
- * Class LanguageLoader
- * @package Bigfoot\Bundle\ContextBundle\ContextLoader
- */
-class DistributorLoader extends AbstractLoader
-{
-    /**
-     * @return mixed
-     */
-    public function getValue()
-    {
-        $domain            = $this->getRequest()->getHttpHost();
-        $values            = explode(".", $domain);
-        $distributor       = array_shift($values);
-        $distributorValues = $this->getValueForKey($distributor);
-
-        return $distributorValues;
-    }
-
-    /**
-     * @return string
-     */
-    public function getContextName()
-    {
-        return 'distributor';
-    }
-}
+Installer les dépendances avec Composer:
+[[[bash
+cd your_project
+curl -sS https://getcomposer.org/installer | php
+php composer.phar install
+]]]
+Si vous n'avez pas indiqué les paramétrages lors de l'installation, paramétrez votre base de données avec l'interface web de configuration standard de Symfony 2 :
+[[[bash
+/app_dev.php/_configurator/step/0
 ]]]
 
-=== Ajout d'un menu
-Les items de menu sont enregistrés dans BigFoot via des Listeners. Cela permet à n'importe quel bundle d'enregistrer ses propres items de menu qui vont s'ajouter aux items fournis par les autres bundle.
-* Créer un listener :
-** les listeners doivent être placés dans le répertoire Listener/ de votre bundle et doivent écouter l'événement "bigfoot.menu.generate" event.
-** Cet événement utilise la class Bigfoot\Bundle\CoreBundle\Event\MenuEvent pour transmettre le menu au listener.
-** L'événement est déclenché par Bigfoot à chaque fois qu'il instancie un menu quelque part. Le fait d'ahouter votre item à un menu donné va l'ajouter sur tous les menus du back office. Pour ajouter votre item à un seul menu, vous devez indiquer le nom du menu.
-** En standard, le back office de BigFoot dispose des menus suivants :
-*** sidebar_menu: e menu principal situé dans la colonne de gauche.
-*** toolbar_menu: le menu situé dans la barre d'outil, il permet d'accéder aux informations utilisateurs et aux liens de paramétrage.
-*** actions_menu: menu utilisé dans les listes pour fournir des actions particulières dans la liste courante (ajouter un item, exporter...)
-
-Exemple :
-[[[ php
-#Acme/Bundle/MyBundle/Listener/MenuListener.php
-	namespace Acme\BundleMyBundle\Listener;
-	
-	use Bigfoot\Bundle\CoreBundle\Event\MenuEvent;
-	use Bigfoot\Bundle\CoreBundle\Theme\Menu\Item;
-	
-	class MenuListener
-	{
-	    /**
-	     * @param MenuEvent $event
-	     */
-	    public function onMenuGenerate(MenuEvent $event)
-	    {
-	        $menu = $event->getMenu();
-	        if ('sidebar_menu' == $menu->getName()) {
-	            $navigation = new Item('sidebar_mymenu', 'My menu');
-	            $navigation->addChild(new Item('sidebar_mymenu_mysubmenu', 'My submenu', 'my_route'));
-	            $menu->addItem($navigation);
-	        }
-	    }
-	}
+Si vous n'avez pas créé au préalable la base de données, Doctrine peut le faire pour vous (c'est une commande sécurisée qui peut être lancée même si la base avait été créée) :
+[[[bash
+./app/console doctrine:database:create
 ]]]
 
-[[[ yaml	
-#Acme/Bundle/MyBundle/Resources/config/services.yml
-	kernel.listener.my_menu_listener:
-	        class: Acme/Bundle/MyBundle/Listener/MenuListener
-	        tags:
-	            - { name: kernel.event_listener, event: bigfoot.menu.generate, method: onMenuGenerate }
+Créez le schéma de base et chargez les données de test :
+[[[bash
+./app/console doctrine:schema:update --force
+./app/console doctrine:fixtures:load
 ]]]
 
-=== Stockage des traductions en base de données
-Vous pouvez stocker en base vos entités de type Bigfoot\Bundle\CoreBundle\Entity\TranslatableLabel et en disposer en tant que traduction dans Symfony 2 :
-* TranslatableLabel->domain : La portée de l'intitulé ("messages" en standard).
-* TranslatableLabel->locale : L'identification de localisation pour cet intitulé.
-* TranslatableLabel->name : Identifiant de l'intitulé - ie un intitulé nommé "homepage.title" va être accessible de la manière suivante 
-[[[twig 
-{{ 'homepage.title' | trans }} 
-]]] dans un template Twig.
-* TranslatableLabel->value : La valeur traduite à afficher
+Paramétrez les droits sur les répertoires de cache et de logs :
+[[[bash
+sudo setfacl -R -m u:www-data:rwx -m u:`whoami`:rwx app/cache/
+sudo setfacl -dR -m u:www-data:rwx -m u:`whoami`:rwx app/cache/
+sudo setfacl -R -m u:www-data:rwx -m u:`whoami`:rwx app/logs/
+sudo setfacl -dR -m u:www-data:rwx -m u:`whoami`:rwx app/logs/
+]]]
 
-Pour que cela fonctionne, vous devez ajouter un fichier de traductions nommé "<domain>.<locale>.db" dans votre répertoire app/Resources/translations , ie : messages.en.db ou alors Symfony 2 ne chargera pas vos traductions.
+Sur Macosx lancez plutôt ces commandes
+[[[bash
+sudo chmod -R +a "`whoami` allow delete,write,append,file_inherit,directory_inherit" app/cache/
+sudo chmod -R +a "`whoami` allow delete,write,append,file_inherit,directory_inherit" app/logs/
+sudo chmod -R +a "_www allow delete,write,append,file_inherit,directory_inherit" app/cache/
+sudo chmod -R +a "_www allow delete,write,append,file_inherit,directory_inherit" app/logs/
+]]]
+
+Les "assets" de Bigfoot ne sont pas dans l'habituel répertoire public/ dans Resources/ ; ils ne sont pas correctement installés avec l'habituel commande assets:install.
+Utilisez cette commande :
+[[[bash
+./app/console bigfoot:theme:install (--symlink)
+]]]
+
+Cette commande installe les assets du back office BigFoot mais exécute également assets:install.
+Si vous la lancez avec l'option symlink, les assets seront installés par le biais de liens symboliques (au lieu d'une copie physique) ce qui est préférable en environnement de développement (pas besoin de relancer cette commande à chaque modification de css ou js).
+
+Les assets de Bigfoot sont chargés via Assetic et sont ignorés par git. Pour que le back office s'affiche correctement en environnement de production vous devez exportez ces assets de la manière suivante :
+[[[bash
+./app/console assetic:dump --env=admin
+./app/console assetic:dump --env=admin_dev
+]]]
