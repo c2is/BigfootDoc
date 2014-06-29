@@ -1,10 +1,22 @@
-How to use our framework to build easily a back office website
+=== Introduction
+Bifgoot is a CMF (Content Management Framework) built on the Symfony 2 framework and Doctrine ORM. It provides a simple and easy extendable back office : each feature can be easily extended by the developer who wants to implement its own needs.
 
-------
+Here is a non comprehensive list of native features :
+* users and roles management,
+* languages management,
+* contexts management,
+* external and internal (imports) data streams management,
+* content images management (portfolio),
+* menus management,
+* contents management,
+* metadata SEO management.
 
-=== Context
-==== Configuration
+=== Contexts
+This powerful feature allow you to easily filter data shown to users. Languages management uses this.
+
+==== Define a context
 [[[ yaml
+# /src/Sandbox/MovieBundle/Entity/Movie.php
 bigfoot_context:
     # A list of entities to mark as "can be contextualized".
     # You can add multiple classes at once using a namespace prefix.
@@ -32,10 +44,61 @@ bigfoot_context:
             label:          "Language"
 ]]]
 
+An other way exists to define "contextualized" entities : with annotation.
+==== Define a "contextualized" entities with annotation
+
+[[[php
+# /src/Sandbox/MovieBundle/Entity/Movie.php
+use Bigfoot\Bundle\CoreBundle\Annotation\Bigfoot;
+/**
+ * Movie
+ *
+ * @ORM\Table(name="sandbox_movie")
+ * @ORM\Entity(repositoryClass="Sandbox\MovieBundle\Entity\MovieRepository")
+ * @Bigfoot\Context({"distributor"})
+ */
+class Movie
+{...}
+]]]
 ==== Context loaders
 Context loaders must be placed in the ContextLoaders/ folder in your bundle.
 They must extend Bigfoot\Bundle\ContextBundle\Model\AbstractContextLoader and implement the methodes getName() (returns a string corresponding to the name of one of the contexts in the bundle configuration) and getValue() (returns the current value for the context).
 If a context loader returns a false equivalent value, the next loader will be called, until all loaders have been called. If no context value is found, the default_value set in the bundle configuration for that context will be used.
+
+Example : a context loader which compute the context value from the current subdomain.
+[[[php
+#/src/Sandbox/DistributorBundle/Loader/DistributorLoader.php
+namespace Sandbox\DistributorBundle\Loader;
+use Bigfoot\Bundle\ContextBundle\Loader\AbstractLoader;
+
+/**
+ * Class LanguageLoader
+ * @package Bigfoot\Bundle\ContextBundle\ContextLoader
+ */
+class DistributorLoader extends AbstractLoader
+{
+    /**
+     * @return mixed
+     */
+    public function getValue()
+    {
+        $domain            = $this->getRequest()->getHttpHost();
+        $values            = explode(".", $domain);
+        $distributor       = array_shift($values);
+        $distributorValues = $this->getValueForKey($distributor);
+
+        return $distributorValues;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContextName()
+    {
+        return 'distributor';
+    }
+}
+]]]
 
 === General
 ==== Generating CRUD in Bigfoot
@@ -57,8 +120,8 @@ Menu items in Bigfoot are added by Listeners. It allows any Bundle to register i
 *** actions_menu: Menu used in listings to allow for custom actions on the current list (add item, export ...)
 
 Example :
-Acme/Bundle/MyBundle/Listener/MenuListener.php
 [[[ php
+#Acme/Bundle/MyBundle/Listener/MenuListener.php
 	namespace Acme\BundleMyBundle\Listener;
 	
 	use Bigfoot\Bundle\CoreBundle\Event\MenuEvent;
@@ -90,10 +153,13 @@ Acme/Bundle/MyBundle/Resources/config/services.yml
 ]]]
 
 ==== Store translations in database
-You can persist Bigfoot\Bundle\CoreBundle\Entity\TranslatableLabel entities and have them available as translations in sf2 :
-TranslatableLabel->domain : The domain for this label (defaults to "messages").
-TranslatableLabel->locale : The locale for this label.
-TranslatableLabel->name : Identifier of the label - eg a label named "homepage.title" will be matched when using {{ 'homepage.title' | trans }} in a twig template.
-TranslatableLabel->value : The translated value to display.
+You can persist Bigfoot\Bundle\CoreBundle\Entity\TranslatableLabel entities and have them available as translations in Symfony 2 :
+* TranslatableLabel->domain : The domain for this label (defaults to "messages").
+* TranslatableLabel->locale : The locale for this label.
+* TranslatableLabel->name : Identifier of the label - eg a label named "homepage.title" will be matched when using 
+[[[twig 
+{{ 'homepage.title' | trans }} 
+]]] in a twig template.
+* TranslatableLabel->value : The translated value to display.
 
-For it to work, you must add translation files into your app/Resources/translations directory named "<domain>.<locale>.db", eg : messages.en.db or Sf2 won't load your translations.
+For it to work, you must add translation files into your app/Resources/translations directory named "<domain>.<locale>.db", eg : messages.en.db or Symfony 2 won't load your translations.

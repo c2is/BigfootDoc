@@ -30,7 +30,20 @@
 <a href="chapter1.html#-"></a>
 <ul class="toc-list">
 <li class="toc-entry">
-<a href="chapter1.html#Context">Context</a>
+<a href="chapter1.html#Introduction">Introduction</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-entry">
+<a href="chapter1.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter1.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter1.html#Contexts">Contexts</a>
 </li>
 </ul>
 </li>
@@ -46,7 +59,25 @@
 <a href="chapter1.html#-"></a>
 <ul class="toc-list">
 <li class="toc-entry">
-<a href="chapter1.html#Configuration">Configuration</a>
+<a href="chapter1.html#Define-a-context">Define a context</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-entry">
+<a href="chapter1.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter1.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter1.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter1.html#Define-a-quot-contextualizedquot-entities-with-annotation">Define a &quot;contextualized&quot; entities with annotation</a>
 </li>
 </ul>
 </li>
@@ -140,26 +171,6 @@
 </ul>
 </li>
 </ul>
-<ul class="toc-list">
-<li class="toc-entry">
-<a href="chapter3.html#-"></a>
-<ul class="toc-list">
-<li class="toc-entry">
-<a href="chapter3.html#-"></a>
-<ul class="toc-list">
-<li class="toc-entry">
-<a href="chapter3.html#-"></a>
-<ul class="toc-list">
-<li class="toc-entry">
-<a href="chapter3.html#Page-3">Page 3</a>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
 
         </aside>
         <article id="page">
@@ -167,13 +178,34 @@
 
             </header>
 
-            <p>How to use our framework to build easily a back office website</p>
+            <h3 id="Introduction">Introduction</h3>
+<p>Bifgoot is a CMF (Content Management Framework) built on the Symfony 2 framework and Doctrine ORM. It provides a simple and easy extendable back office : each feature can be easily extended by the developer who wants to implement its own needs.</p>
 
-<hr />
+<p>Here is a non comprehensive list of native features :</p>
+<ul>
+<li>users and roles management,
+</li>
+<li>languages management,
+</li>
+<li>contexts management,
+</li>
+<li>external and internal (imports) data streams management,
+</li>
+<li>content images management (portfolio),
+</li>
+<li>menus management,
+</li>
+<li>contents management,
+</li>
+<li>metadata SEO management.</li></ul>
 
-<h3 id="Context">Context</h3>
-<h4 id="Configuration">Configuration</h4>
-<pre class="language-yaml" style="font-family:monospace;"><span style="color: #007F45;">bigfoot_context</span><span style="font-weight: bold; color: brown;">:
+
+<h3 id="Contexts">Contexts</h3>
+<p>This powerful feature allow you to easily filter data shown to users. Languages management uses this.</p>
+
+<h4 id="Define-a-context">Define a context</h4>
+<pre class="language-yaml" style="font-family:monospace;"><span style="color: blue;"># /src/Sandbox/MovieBundle/Entity/Movie.php</span><span style="color: #007F45;">
+bigfoot_context</span><span style="font-weight: bold; color: brown;">:
 </span>    <span style="color: blue;"># A list of entities to mark as &quot;can be contextualized&quot;.</span>
     <span style="color: blue;"># You can add multiple classes at once using a namespace prefix.</span>
     <span style="color: blue;"># For example, adding Bigfoot\ means every entity which namespace begins with Bigfoot\ will be contextualizable.</span><span style="color: #007F45;">
@@ -199,10 +231,57 @@
             <span style="color: blue;"># String representation for the context.</span><span style="color: green;">
             label</span><span style="font-weight: bold; color: brown;">: </span>         <span style="color: #CF00CF;">&quot;Language&quot;</span></pre>
 
+<p>An other way exists to define &quot;contextualized&quot; entities : with annotation.</p>
+<h4 id="Define-a-contextualized-entities-with-annotation">Define a &quot;contextualized&quot; entities with annotation</h4>
+
+<pre class="language-php" style="font-family:monospace;"><span style="color: #666666; font-style: italic;"># /src/Sandbox/MovieBundle/Entity/Movie.php
+</span><span style="color: #000000; font-weight: bold;">use</span> Bigfoot\Bundle\CoreBundle\Annotation\Bigfoot<span style="color: #339933;">;</span>
+<span style="color: #009933; font-style: italic;">/**
+ * Movie
+ *
+ * @ORM\Table(name=&quot;sandbox_movie&quot;)
+ * @ORM\Entity(repositoryClass=&quot;Sandbox\MovieBundle\Entity\MovieRepository&quot;)
+ * @Bigfoot\Context({&quot;distributor&quot;})
+ */</span>
+<span style="color: #000000; font-weight: bold;">class</span> Movie
+<span style="color: #009900;">&#123;</span><span style="color: #339933;">...</span><span style="color: #009900;">&#125;</span></pre>
 <h4 id="Context-loaders">Context loaders</h4>
 <p>Context loaders must be placed in the ContextLoaders/ folder in your bundle.
 <br />They must extend Bigfoot\Bundle\ContextBundle\Model\AbstractContextLoader and implement the methodes getName() (returns a string corresponding to the name of one of the contexts in the bundle configuration) and getValue() (returns the current value for the context).
 <br />If a context loader returns a false equivalent value, the next loader will be called, until all loaders have been called. If no context value is found, the default_value set in the bundle configuration for that context will be used.</p>
+
+<p>Example : a context loader which compute the context value from the current subdomain.</p>
+<pre class="language-php" style="font-family:monospace;"><span style="color: #666666; font-style: italic;">#/src/Sandbox/DistributorBundle/Loader/DistributorLoader.php
+</span><span style="color: #000000; font-weight: bold;">namespace</span> Sandbox\DistributorBundle\Loader<span style="color: #339933;">;</span>
+<span style="color: #000000; font-weight: bold;">use</span> Bigfoot\Bundle\ContextBundle\Loader\AbstractLoader<span style="color: #339933;">;</span>
+&nbsp;
+<span style="color: #009933; font-style: italic;">/**
+ * Class LanguageLoader
+ * @package Bigfoot\Bundle\ContextBundle\ContextLoader
+ */</span>
+<span style="color: #000000; font-weight: bold;">class</span> DistributorLoader <span style="color: #000000; font-weight: bold;">extends</span> AbstractLoader
+<span style="color: #009900;">&#123;</span>
+    <span style="color: #009933; font-style: italic;">/**
+     * @return mixed
+     */</span>
+    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">function</span> getValue<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>
+    <span style="color: #009900;">&#123;</span>
+        <span style="color: #000088;">$domain</span>            <span style="color: #339933;">=</span> <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">getRequest</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">getHttpHost</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+        <span style="color: #000088;">$values</span>            <span style="color: #339933;">=</span> <a href="http://www.php.net/explode"><span style="color: #990000;">explode</span></a><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;.&quot;</span><span style="color: #339933;">,</span> <span style="color: #000088;">$domain</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+        <span style="color: #000088;">$distributor</span>       <span style="color: #339933;">=</span> <a href="http://www.php.net/array_shift"><span style="color: #990000;">array_shift</span></a><span style="color: #009900;">&#40;</span><span style="color: #000088;">$values</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+        <span style="color: #000088;">$distributorValues</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">getValueForKey</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$distributor</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+        <span style="color: #b1b100;">return</span> <span style="color: #000088;">$distributorValues</span><span style="color: #339933;">;</span>
+    <span style="color: #009900;">&#125;</span>
+&nbsp;
+    <span style="color: #009933; font-style: italic;">/**
+     * @return string
+     */</span>
+    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">function</span> getContextName<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>
+    <span style="color: #009900;">&#123;</span>
+        <span style="color: #b1b100;">return</span> <span style="color: #0000ff;">'distributor'</span><span style="color: #339933;">;</span>
+    <span style="color: #009900;">&#125;</span>
+<span style="color: #009900;">&#125;</span></pre>
 
 <h3 id="General">General</h3>
 <h4 id="Generating-CRUD-in-Bigfoot">Generating CRUD in Bigfoot</h4>
@@ -238,9 +317,9 @@
 </li></ul>
 
 
-<p>Example :
-<br />Acme/Bundle/MyBundle/Listener/MenuListener.php</p>
-<pre class="language-php" style="font-family:monospace;">	<span style="color: #000000; font-weight: bold;">namespace</span> Acme\BundleMyBundle\Listener<span style="color: #339933;">;</span>
+<p>Example :</p>
+<pre class="language-php" style="font-family:monospace;"><span style="color: #666666; font-style: italic;">#Acme/Bundle/MyBundle/Listener/MenuListener.php
+</span>	<span style="color: #000000; font-weight: bold;">namespace</span> Acme\BundleMyBundle\Listener<span style="color: #339933;">;</span>
 &nbsp;
 	<span style="color: #000000; font-weight: bold;">use</span> Bigfoot\Bundle\CoreBundle\Event\MenuEvent<span style="color: #339933;">;</span>
 	<span style="color: #000000; font-weight: bold;">use</span> Bigfoot\Bundle\CoreBundle\Theme\Menu\Item<span style="color: #339933;">;</span>
@@ -268,13 +347,20 @@
 	            - { name</span><span style="font-weight: bold; color: brown;">: </span>kernel.event_listener, event<span style="font-weight: bold; color: brown;">: </span>bigfoot.menu.generate, method<span style="font-weight: bold; color: brown;">: </span>onMenuGenerate <span class="br0">&#125;</span></pre>
 
 <h4 id="Store-translations-in-database">Store translations in database</h4>
-<p>You can persist Bigfoot\Bundle\CoreBundle\Entity\TranslatableLabel entities and have them available as translations in sf2 :
-<br />TranslatableLabel-&gt;domain : The domain for this label (defaults to &quot;messages&quot;).
-<br />TranslatableLabel-&gt;locale : The locale for this label.
-<br />TranslatableLabel-&gt;name : Identifier of the label - eg a label named &quot;homepage.title&quot; will be matched when using <img src="trans" alt="'homepage.title'" /> in a twig template.
-<br />TranslatableLabel-&gt;value : The translated value to display.</p>
+<p>You can persist Bigfoot\Bundle\CoreBundle\Entity\TranslatableLabel entities and have them available as translations in Symfony 2 :</p>
+<ul>
+<li>TranslatableLabel-&gt;domain : The domain for this label (defaults to &quot;messages&quot;).
+</li>
+<li>TranslatableLabel-&gt;locale : The locale for this label.
+</li>
+<li>TranslatableLabel-&gt;name : Identifier of the label - eg a label named &quot;homepage.title&quot; will be matched when using </li></ul>
 
-<p>For it to work, you must add translation files into your app/Resources/translations directory named &quot;&lt;domain&gt;.&lt;locale&gt;.db&quot;, eg : messages.en.db or Sf2 won't load your translations.</p>
+<pre class="language-twig" style="font-family:monospace;"><span style="color: #008000;"><span style="color: #D36900;">&#123;</span><span style="color: #D36900;">&#123;</span></span> <span style="color: #ff0000;">'homepage.title'</span> <span style="color: #D36900;">|</span> <a href="http://twig.sensiolabs.org/doc/tags/trans.html"><span style="color: #0600FF;">trans</span></a> <span style="color: #008000;"><span style="color: #D36900;">&#125;</span><span style="color: #D36900;">&#125;</span></span> </pre>
+<ul>
+<li>TranslatableLabel-&gt;value : The translated value to display.</li></ul>
+
+
+<p>For it to work, you must add translation files into your app/Resources/translations directory named &quot;&lt;domain&gt;.&lt;locale&gt;.db&quot;, eg : messages.en.db or Symfony 2 won't load your translations.</p>
 
             <footer>
 
