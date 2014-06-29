@@ -29,7 +29,7 @@ sudo setfacl -dR -m u:www-data:rwx -m u:`whoami`:rwx app/logs/
 ./app/console assetic:dump --env=admin_dev
 ]]]
 
-=== Install detailed
+=== Detailed install
 Clone this project
 [[[bash
 git clone git@github.com:c2is/Bigfoot.git your_project
