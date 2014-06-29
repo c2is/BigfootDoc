@@ -33,7 +33,7 @@ bigfoot_context:
 ]]]
 
 An other way exists to define "contextualized" entities : with annotation.
-==== Define a "contextualized" entities with annotation
+==== Define "contextualized" entities with annotation
 
 [[[php
 # /src/Sandbox/MovieBundle/Entity/Movie.php
