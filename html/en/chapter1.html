@@ -46,7 +46,20 @@
 <a href="chapter1.html#-"></a>
 <ul class="toc-list">
 <li class="toc-entry">
-<a href="chapter1.html#Install">Install</a>
+<a href="chapter1.html#Install-synopsis">Install synopsis</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-entry">
+<a href="chapter1.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter1.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter1.html#Install-detailed">Install detailed</a>
 </li>
 </ul>
 </li>
@@ -217,7 +230,24 @@
 <li>metadata SEO management.</li></ul>
 
 
-<h3 id="Install">Install</h3>
+<h3 id="Install-synopsis">Install synopsis</h3>
+<pre class="language-bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">git clone</span> <span style="color: #c20cb9; font-weight: bold;">git</span><span style="color: #000000; font-weight: bold;">@</span>github.com:c2is<span style="color: #000000; font-weight: bold;">/</span>Bigfoot.git your_project
+<span style="color: #7a0874; font-weight: bold;">cd</span> your_project
+curl <span style="color: #660033;">-sS</span> https:<span style="color: #000000; font-weight: bold;">//</span>getcomposer.org<span style="color: #000000; font-weight: bold;">/</span>installer <span style="color: #000000; font-weight: bold;">|</span> php
+php composer.phar <span style="color: #c20cb9; font-weight: bold;">install</span>
+.<span style="color: #000000; font-weight: bold;">/</span>app<span style="color: #000000; font-weight: bold;">/</span>console doctrine:database:create
+.<span style="color: #000000; font-weight: bold;">/</span>app<span style="color: #000000; font-weight: bold;">/</span>console doctrine:schema:update <span style="color: #660033;">--force</span>
+.<span style="color: #000000; font-weight: bold;">/</span>app<span style="color: #000000; font-weight: bold;">/</span>console doctrine:fixtures:load
+<span style="color: #c20cb9; font-weight: bold;">sudo</span> setfacl <span style="color: #660033;">-R</span> <span style="color: #660033;">-m</span> u:www-data:rwx <span style="color: #660033;">-m</span> u:<span style="color: #000000; font-weight: bold;">`</span><span style="color: #c20cb9; font-weight: bold;">whoami</span><span style="color: #000000; font-weight: bold;">`</span>:rwx app<span style="color: #000000; font-weight: bold;">/</span>cache<span style="color: #000000; font-weight: bold;">/</span>
+<span style="color: #c20cb9; font-weight: bold;">sudo</span> setfacl <span style="color: #660033;">-dR</span> <span style="color: #660033;">-m</span> u:www-data:rwx <span style="color: #660033;">-m</span> u:<span style="color: #000000; font-weight: bold;">`</span><span style="color: #c20cb9; font-weight: bold;">whoami</span><span style="color: #000000; font-weight: bold;">`</span>:rwx app<span style="color: #000000; font-weight: bold;">/</span>cache<span style="color: #000000; font-weight: bold;">/</span>
+<span style="color: #c20cb9; font-weight: bold;">sudo</span> setfacl <span style="color: #660033;">-R</span> <span style="color: #660033;">-m</span> u:www-data:rwx <span style="color: #660033;">-m</span> u:<span style="color: #000000; font-weight: bold;">`</span><span style="color: #c20cb9; font-weight: bold;">whoami</span><span style="color: #000000; font-weight: bold;">`</span>:rwx app<span style="color: #000000; font-weight: bold;">/</span>logs<span style="color: #000000; font-weight: bold;">/</span>
+<span style="color: #c20cb9; font-weight: bold;">sudo</span> setfacl <span style="color: #660033;">-dR</span> <span style="color: #660033;">-m</span> u:www-data:rwx <span style="color: #660033;">-m</span> u:<span style="color: #000000; font-weight: bold;">`</span><span style="color: #c20cb9; font-weight: bold;">whoami</span><span style="color: #000000; font-weight: bold;">`</span>:rwx app<span style="color: #000000; font-weight: bold;">/</span>logs<span style="color: #000000; font-weight: bold;">/</span>
+.<span style="color: #000000; font-weight: bold;">/</span>app<span style="color: #000000; font-weight: bold;">/</span>console bigfoot:theme:install <span style="color: #7a0874; font-weight: bold;">&#40;</span>--symlink<span style="color: #7a0874; font-weight: bold;">&#41;</span>
+.<span style="color: #000000; font-weight: bold;">/</span>app<span style="color: #000000; font-weight: bold;">/</span>console assetic:dump <span style="color: #660033;">--env</span>=admin
+.<span style="color: #000000; font-weight: bold;">/</span>app<span style="color: #000000; font-weight: bold;">/</span>console assetic:dump <span style="color: #660033;">--env</span>=admin_dev</pre>
+
+<h3 id="Install-detailed">Install detailed</h3>
+<p>Clone this project</p>
 <pre class="language-bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">git clone</span> <span style="color: #c20cb9; font-weight: bold;">git</span><span style="color: #000000; font-weight: bold;">@</span>github.com:c2is<span style="color: #000000; font-weight: bold;">/</span>Bigfoot.git your_project</pre>
 
 <p>Install dependencies using composer:</p>
@@ -246,6 +276,16 @@ php composer.phar <span style="color: #c20cb9; font-weight: bold;">install</span
 <span style="color: #c20cb9; font-weight: bold;">sudo</span> <span style="color: #c20cb9; font-weight: bold;">chmod</span> <span style="color: #660033;">-R</span> +a <span style="color: #ff0000;">&quot;<span style="color: #780078;">`whoami`</span> allow delete,write,append,file_inherit,directory_inherit&quot;</span> app<span style="color: #000000; font-weight: bold;">/</span>logs<span style="color: #000000; font-weight: bold;">/</span>
 <span style="color: #c20cb9; font-weight: bold;">sudo</span> <span style="color: #c20cb9; font-weight: bold;">chmod</span> <span style="color: #660033;">-R</span> +a <span style="color: #ff0000;">&quot;_www allow delete,write,append,file_inherit,directory_inherit&quot;</span> app<span style="color: #000000; font-weight: bold;">/</span>cache<span style="color: #000000; font-weight: bold;">/</span>
 <span style="color: #c20cb9; font-weight: bold;">sudo</span> <span style="color: #c20cb9; font-weight: bold;">chmod</span> <span style="color: #660033;">-R</span> +a <span style="color: #ff0000;">&quot;_www allow delete,write,append,file_inherit,directory_inherit&quot;</span> app<span style="color: #000000; font-weight: bold;">/</span>logs<span style="color: #000000; font-weight: bold;">/</span></pre>
+
+<p>Bigfoot assets are not in the usual public/ directory under Resources/ ; they are not installed properly with an assets:install. To install the administration interface assets, please use:</p>
+<pre class="language-bash" style="font-family:monospace;">.<span style="color: #000000; font-weight: bold;">/</span>app<span style="color: #000000; font-weight: bold;">/</span>console bigfoot:theme:install <span style="color: #7a0874; font-weight: bold;">&#40;</span>--symlink<span style="color: #7a0874; font-weight: bold;">&#41;</span></pre>
+
+<p>This command installs bigfoot assets and also executes the usual assets:install command. If executed with the symlink option, assets will be installed via a symbolic link (instead of hard copy), which is recommended during development (no need to assets:install everytime a css / js file is changed).</p>
+
+<p>Bigfoot assets are loaded via Assetic and are gitignored. To have the admin interface display properly in production environment, you first must dump the assets with:</p>
+<pre class="language-bash" style="font-family:monospace;">.<span style="color: #000000; font-weight: bold;">/</span>app<span style="color: #000000; font-weight: bold;">/</span>console assetic:dump <span style="color: #660033;">--env</span>=admin
+.<span style="color: #000000; font-weight: bold;">/</span>app<span style="color: #000000; font-weight: bold;">/</span>console assetic:dump <span style="color: #660033;">--env</span>=admin_dev</pre>
+
             <footer>
 
             </footer>
