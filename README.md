@@ -1,6 +1,6 @@
 #BigfootDoc
 
-See [documentation](http://c2is.github.io/BigfootDoc/html/en/).
+See [documentation](http://c2is.github.io/BigfootDoc).
 
 ## How to contribute to this doc
 ### Clone and install
