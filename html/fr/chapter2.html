@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Bigfoot's documentation</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+
+    <link rel="stylesheet" href="../css/normalize.min.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/font-awesome.css">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body id="top">
+<div class="header-container">
+    <header class="wrapper clearfix">
+        <h1 class="title">Documentation de Bigfoot</h1>
+        <ul class="nav">
+            <li id="lang"><a id="en" href="../en/chapter1.html">EN</a> | <a href="../fr/chapter1.html" id="fr">FR</a>
+        </ul>
+    </header>
+</div>
+
+<div class="main-container">
+<div class="main wrapper clearfix">
+<article id="page">
+<header>
+
+</header>
+
+    
+<h3 id="Contextes">Contextes</h3>
+<p>C'est une fonctionnalité puissante de BigFoot, elle vous permet de facilement filtrer les données que peur voir un utilisateur. La gestion des langues utilise ce concept.</p>
+
+<h4 id="Definition-d-un-contexte">Définition d'un contexte</h4>
+<pre class="language-yaml" style="font-family:monospace;"><span style="color: blue;"># /app/config/bigfoot.yml</span><span style="color: #007F45;">
+bigfoot_context</span><span style="font-weight: bold; color: brown;">:
+</span>    <span style="color: blue;"># Une liste d'entités à définir comme contextualisables.</span>
+    <span style="color: blue;"># Vous pouvez définir plusieurs entités d'un coup en utilisant un préfixe d'espace de nom.</span>
+    <span style="color: blue;"># Par exemple, indiquer Bigfoot\ signifie que chaque entité dont l'espace de nom commence par Bigfoot\ sera contextualisée.</span><span style="color: #007F45;">
+    entities</span><span style="font-weight: bold; color: brown;">:
+</span>        - <span style="color: #CF00CF;">&quot;Bigfoot\\&quot;</span>
+    <span style="color: blue;"># Une liste de contextes.</span>
+    <span style="color: blue;"># Le nom utilisé pour chaque contexte est important car c'est lui qui permettra d'identifier le contexte.</span><span style="color: #007F45;">
+    contexts</span>:<span style="color: #007F45;">
+        language</span><span style="font-weight: bold; color: brown;">:
+</span>            <span style="color: blue;"># Une liste d'activateurs de contexte qui vont être appelés successivement, dans l'ordre défini ici même, pour déterminer quels sont les contextes courants durant la navigation.</span><span style="color: #007F45;">
+            loaders</span>:<span style="color: green;">
+                back</span><span style="font-weight: bold; color: brown;">: </span>      <span style="color: #CF00CF;">&quot;bigfoot_language_loader&quot;</span>
+            <span style="color: blue;"># Une liste d'intitulé/valeur représentant les filtres que peut activer ce contexte.</span><span style="color: #007F45;">
+            values</span>:<span style="color: #007F45;">
+                fr</span>:<span style="color: green;">
+                    label</span><span style="font-weight: bold; color: brown;">: </span> <span style="color: #CF00CF;">&quot;French&quot;</span><span style="color: green;">
+                    value</span><span style="font-weight: bold; color: brown;">: </span> <span style="color: #CF00CF;">&quot;fr&quot;</span><span style="color: #007F45;">
+                en</span>:<span style="color: green;">
+                    label</span><span style="font-weight: bold; color: brown;">: </span> <span style="color: #CF00CF;">&quot;English&quot;</span><span style="color: green;">
+                    value</span><span style="font-weight: bold; color: brown;">: </span> <span style="color: #CF00CF;">&quot;en&quot;</span>
+            <span style="color: blue;"># La valeur standard de ce contexte.</span><span style="color: green;">
+            default_value</span><span style="font-weight: bold; color: brown;">: </span> <span style="font-weight: bold; color: red;">%locale%</span>
+            <span style="color: blue;"># Intitulé de ce contexte.</span><span style="color: green;">
+            label</span><span style="font-weight: bold; color: brown;">: </span>         <span style="color: #CF00CF;">&quot;Language&quot;</span></pre>
+
+<p>Une autre méthode existe pour définir les entitiés contextualisable : en annotation.</p>
+<h4 id="Definition-d-entites-contextualisables-en-annotation">Définition d'entités contextualisables en annotation</h4>
+
+<pre class="language-php" style="font-family:monospace;"><span style="color: #666666; font-style: italic;"># /src/Sandbox/MovieBundle/Entity/Movie.php
+</span><span style="color: #000000; font-weight: bold;">use</span> Bigfoot\Bundle\CoreBundle\Annotation\Bigfoot<span style="color: #339933;">;</span>
+<span style="color: #009933; font-style: italic;">/**
+ * Movie
+ *
+ * @ORM\Table(name=&quot;sandbox_movie&quot;)
+ * @ORM\Entity(repositoryClass=&quot;Sandbox\MovieBundle\Entity\MovieRepository&quot;)
+ * @Bigfoot\Context({&quot;distributor&quot;})
+ */</span>
+<span style="color: #000000; font-weight: bold;">class</span> Movie
+<span style="color: #009900;">&#123;</span><span style="color: #339933;">...</span><span style="color: #009900;">&#125;</span></pre>
+
+<h4 id="Activateur-de-contexte">Activateur de contexte</h4>
+<p>Les activateurs de contextes doivent être placés dans le dossier ContextLoaders de votre bundle.
+<br />Ils doivent étendre Bigfoot\Bundle\ContextBundle\Model\AbstractContextLoader et implementer la méthode getName() qui doit retourner une chaîne correspondant au nom du contexte défini dans la configuration ou l'annotation.
+<br />Ils doivent également implémenter la méthode getValue() qui retourne la valeur courante du contexte. Si cette méthode retourne une valeur équivalente à false, l'activateur suivant va être appelé et ainsi de suite jusqu'au dernier activateur défini.
+<br />Si aucune valeur n'est trouvée, c'est la valeur standard (définie dans la configuration) qui sera utilisée.</p>
+
+<p>Exemple : un activateur de contexte qui calcule sa valeur par rapport au sous-domaine courant.</p>
+<pre class="language-php" style="font-family:monospace;"><span style="color: #666666; font-style: italic;">#/src/Sandbox/DistributorBundle/Loader/DistributorLoader.php
+</span><span style="color: #000000; font-weight: bold;">namespace</span> Sandbox\DistributorBundle\Loader<span style="color: #339933;">;</span>
+<span style="color: #000000; font-weight: bold;">use</span> Bigfoot\Bundle\ContextBundle\Loader\AbstractLoader<span style="color: #339933;">;</span>
+&nbsp;
+<span style="color: #009933; font-style: italic;">/**
+ * Class LanguageLoader
+ * @package Bigfoot\Bundle\ContextBundle\ContextLoader
+ */</span>
+<span style="color: #000000; font-weight: bold;">class</span> DistributorLoader <span style="color: #000000; font-weight: bold;">extends</span> AbstractLoader
+<span style="color: #009900;">&#123;</span>
+    <span style="color: #009933; font-style: italic;">/**
+     * @return mixed
+     */</span>
+    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">function</span> getValue<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>
+    <span style="color: #009900;">&#123;</span>
+        <span style="color: #000088;">$domain</span>            <span style="color: #339933;">=</span> <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">getRequest</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">getHttpHost</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+        <span style="color: #000088;">$values</span>            <span style="color: #339933;">=</span> <a href="http://www.php.net/explode"><span style="color: #990000;">explode</span></a><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;.&quot;</span><span style="color: #339933;">,</span> <span style="color: #000088;">$domain</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+        <span style="color: #000088;">$distributor</span>       <span style="color: #339933;">=</span> <a href="http://www.php.net/array_shift"><span style="color: #990000;">array_shift</span></a><span style="color: #009900;">&#40;</span><span style="color: #000088;">$values</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+        <span style="color: #000088;">$distributorValues</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">getValueForKey</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$distributor</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+        <span style="color: #b1b100;">return</span> <span style="color: #000088;">$distributorValues</span><span style="color: #339933;">;</span>
+    <span style="color: #009900;">&#125;</span>
+&nbsp;
+    <span style="color: #009933; font-style: italic;">/**
+     * @return string
+     */</span>
+    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">function</span> getContextName<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>
+    <span style="color: #009900;">&#123;</span>
+        <span style="color: #b1b100;">return</span> <span style="color: #0000ff;">'distributor'</span><span style="color: #339933;">;</span>
+    <span style="color: #009900;">&#125;</span>
+<span style="color: #009900;">&#125;</span></pre>
+
+<h3 id="Ajout-d-un-menu">Ajout d'un menu</h3>
+<p>Les items de menu sont enregistrés dans BigFoot via des Listeners. Cela permet à n'importe quel bundle d'enregistrer ses propres items de menu qui vont s'ajouter aux items fournis par les autres bundle.</p>
+<ul>
+<li>Créer un listener :
+<ul><li>les listeners doivent être placés dans le répertoire Listener/ de votre bundle et doivent écouter l'événement &quot;bigfoot.menu.generate&quot; event.
+</li>
+<li>Cet événement utilise la class Bigfoot\Bundle\CoreBundle\Event\MenuEvent pour transmettre le menu au listener.
+</li>
+<li>L'événement est déclenché par Bigfoot à chaque fois qu'il instancie un menu quelque part. Le fait d'ahouter votre item à un menu donné va l'ajouter sur tous les menus du back office. Pour ajouter votre item à un seul menu, vous devez indiquer le nom du menu.
+</li>
+<li>En standard, le back office de BigFoot dispose des menus suivants :
+<ul><li>sidebar_menu: e menu principal situé dans la colonne de gauche.
+</li>
+<li>toolbar_menu: le menu situé dans la barre d'outil, il permet d'accéder aux informations utilisateurs et aux liens de paramétrage.
+</li>
+<li>actions_menu: menu utilisé dans les listes pour fournir des actions particulières dans la liste courante (ajouter un item, exporter...)</li></ul>
+</li></ul>
+</li></ul>
+
+
+<p>Exemple :</p>
+<pre class="language-php" style="font-family:monospace;"><span style="color: #666666; font-style: italic;">#Acme/Bundle/MyBundle/Listener/MenuListener.php
+</span>	<span style="color: #000000; font-weight: bold;">namespace</span> Acme\BundleMyBundle\Listener<span style="color: #339933;">;</span>
+&nbsp;
+	<span style="color: #000000; font-weight: bold;">use</span> Bigfoot\Bundle\CoreBundle\Event\MenuEvent<span style="color: #339933;">;</span>
+	<span style="color: #000000; font-weight: bold;">use</span> Bigfoot\Bundle\CoreBundle\Theme\Menu\Item<span style="color: #339933;">;</span>
+&nbsp;
+	<span style="color: #000000; font-weight: bold;">class</span> MenuListener
+	<span style="color: #009900;">&#123;</span>
+	    <span style="color: #009933; font-style: italic;">/**
+	     * @param MenuEvent $event
+	     */</span>
+	    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">function</span> onMenuGenerate<span style="color: #009900;">&#40;</span>MenuEvent <span style="color: #000088;">$event</span><span style="color: #009900;">&#41;</span>
+	    <span style="color: #009900;">&#123;</span>
+	        <span style="color: #000088;">$menu</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$event</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">getMenu</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+	        <span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'sidebar_menu'</span> <span style="color: #339933;">==</span> <span style="color: #000088;">$menu</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">getName</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+	            <span style="color: #000088;">$navigation</span> <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> Item<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'sidebar_mymenu'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'My menu'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+	            <span style="color: #000088;">$navigation</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">addChild</span><span style="color: #009900;">&#40;</span><span style="color: #000000; font-weight: bold;">new</span> Item<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'sidebar_mymenu_mysubmenu'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'My submenu'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'my_route'</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+	            <span style="color: #000088;">$menu</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">addItem</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$navigation</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+	        <span style="color: #009900;">&#125;</span>
+	    <span style="color: #009900;">&#125;</span>
+	<span style="color: #009900;">&#125;</span></pre>
+
+<pre class="language-yaml" style="font-family:monospace;"><span style="color: blue;">#Acme/Bundle/MyBundle/Resources/config/services.yml</span><span style="color: #007F45;">
+	kernel.listener.my_menu_listener</span>:<span style="color: green;">
+	        class</span><span style="font-weight: bold; color: brown;">: </span>Acme/Bundle/MyBundle/Listener/MenuListener<span style="color: #007F45;">
+	        tags</span>:<span style="color: green;">
+	            - { name</span><span style="font-weight: bold; color: brown;">: </span>kernel.event_listener, event<span style="font-weight: bold; color: brown;">: </span>bigfoot.menu.generate, method<span style="font-weight: bold; color: brown;">: </span>onMenuGenerate <span class="br0">&#125;</span></pre>
+
+<h3 id="Stockage-des-traductions-en-base-de-donnees">Stockage des traductions en base de données</h3>
+<p>Vous pouvez stocker en base vos entités de type Bigfoot\Bundle\CoreBundle\Entity\TranslatableLabel et en disposer en tant que traduction dans Symfony 2 :</p>
+<ul>
+<li>TranslatableLabel-&gt;domain : La portée de l'intitulé (&quot;messages&quot; en standard).
+</li>
+<li>TranslatableLabel-&gt;locale : L'identification de localisation pour cet intitulé.
+</li>
+<li>TranslatableLabel-&gt;name : Identifiant de l'intitulé - ie un intitulé nommé &quot;homepage.title&quot; va être accessible de la manière suivante </li></ul>
+
+<pre class="language-twig" style="font-family:monospace;"><span style="color: #008000;"><span style="color: #D36900;">&#123;</span><span style="color: #D36900;">&#123;</span></span> <span style="color: #ff0000;">'homepage.title'</span> <span style="color: #D36900;">|</span> <a href="http://twig.sensiolabs.org/doc/tags/trans.html"><span style="color: #0600FF;">trans</span></a> <span style="color: #008000;"><span style="color: #D36900;">&#125;</span><span style="color: #D36900;">&#125;</span></span> </pre>
+<ul>
+<li>TranslatableLabel-&gt;value : La valeur traduite à afficher</li></ul>
+
+
+<p>Pour que cela fonctionne, vous devez ajouter un fichier de traductions nommé &quot;&lt;domain&gt;.&lt;locale&gt;.db&quot; dans votre répertoire app/Resources/translations , ie : messages.en.db ou alors Symfony 2 ne chargera pas vos traductions.</p>
+
+<footer>
+
+</footer>
+</article>
+
+<aside id="toc">
+    <ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter1.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter1.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter1.html#Presentation">Présentation</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-entry">
+<a href="chapter1.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter1.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter1.html#Installation-rapide">Installation rapide</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-entry">
+<a href="chapter1.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter1.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter1.html#Installation-detaillee">Installation détaillée</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter2.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter2.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter2.html#Contextes">Contextes</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-entry">
+<a href="chapter2.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter2.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter2.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter2.html#Definition-d-un-contexte">Définition d'un contexte</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-entry">
+<a href="chapter2.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter2.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter2.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter2.html#Definition-d-entites-contextualisables-en-annotation">Définition d'entités contextualisables en annotation</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-entry">
+<a href="chapter2.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter2.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter2.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter2.html#Activateur-de-contexte">Activateur de contexte</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-entry">
+<a href="chapter2.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter2.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter2.html#Ajout-d-un-menu">Ajout d'un menu</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-entry">
+<a href="chapter2.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter2.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
+<a href="chapter2.html#Stockage-des-traductions-en-base-de-donnees">Stockage des traductions en base de données</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</aside>
+</div> <!-- #main -->
+</div> <!-- #main-container -->
+
+<div class="footer-container">
+    <footer class="wrapper">
+
+    </footer>
+</div>
+
+
+<script type="text/javascript" src="../js/jquery.js"></script>
+<script type="text/javascript" src="../js/script.js"></script>
+</body>
+</html>
