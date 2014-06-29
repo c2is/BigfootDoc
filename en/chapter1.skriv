@@ -16,7 +16,7 @@ This powerful feature allow you to easily filter data shown to users. Languages 
 
 ==== Define a context
 [[[ yaml
-# /src/Sandbox/MovieBundle/Entity/Movie.php
+# /app/config/bigfoot.yml
 bigfoot_context:
     # A list of entities to mark as "can be contextualized".
     # You can add multiple classes at once using a namespace prefix.
