@@ -61,7 +61,7 @@ class Movie
 {...}
 ]]]
 
-=== Activateur de contexte
+==== Activateur de contexte
 Les activateurs de contextes doivent être placés dans le dossier ContextLoaders de votre bundle.
 Ils doivent étendre Bigfoot\Bundle\ContextBundle\Model\AbstractContextLoader et implementer la méthode getName() qui doit retourner une chaîne correspondant au nom du contexte défini dans la configuration ou l'annotation.
 Ils doivent également implémenter la méthode getValue() qui retourne la valeur courante du contexte. Si cette méthode retourne une valeur équivalente à false, l'activateur suivant va être appelé et ainsi de suite jusqu'au dernier activateur défini.
@@ -102,7 +102,7 @@ class DistributorLoader extends AbstractLoader
 }
 ]]]
 
-==== Ajout d'un menu
+=== Ajout d'un menu
 Les items de menu sont enregistrés dans BigFoot via des Listeners. Cela permet à n'importe quel bundle d'enregistrer ses propres items de menu qui vont s'ajouter aux items fournis par les autres bundle.
 * Créer un listener :
 ** les listeners doivent être placés dans le répertoire Listener/ de votre bundle et doivent écouter l'événement "bigfoot.menu.generate" event.
@@ -146,7 +146,7 @@ Exemple :
 	            - { name: kernel.event_listener, event: bigfoot.menu.generate, method: onMenuGenerate }
 ]]]
 
-==== Stockage des traductions en base de données
+=== Stockage des traductions en base de données
 Vous pouvez stocker en base vos entités de type Bigfoot\Bundle\CoreBundle\Entity\TranslatableLabel et en disposer en tant que traduction dans Symfony 2 :
 * TranslatableLabel->domain : La portée de l'intitulé ("messages" en standard).
 * TranslatableLabel->locale : L'identification de localisation pour cet intitulé.
