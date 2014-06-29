@@ -97,7 +97,7 @@ bigfoot_context</span><span style="font-weight: bold; color: brown;">:
 <span style="color: #000000; font-weight: bold;">class</span> Movie
 <span style="color: #009900;">&#123;</span><span style="color: #339933;">...</span><span style="color: #009900;">&#125;</span></pre>
 
-<h3 id="Activateur-de-contexte">Activateur de contexte</h3>
+<h4 id="Activateur-de-contexte">Activateur de contexte</h4>
 <p>Les activateurs de contextes doivent être placés dans le dossier ContextLoaders de votre bundle.
 <br />Ils doivent étendre Bigfoot\Bundle\ContextBundle\Model\AbstractContextLoader et implementer la méthode getName() qui doit retourner une chaîne correspondant au nom du contexte défini dans la configuration ou l'annotation.
 <br />Ils doivent également implémenter la méthode getValue() qui retourne la valeur courante du contexte. Si cette méthode retourne une valeur équivalente à false, l'activateur suivant va être appelé et ainsi de suite jusqu'au dernier activateur défini.
@@ -136,7 +136,7 @@ bigfoot_context</span><span style="font-weight: bold; color: brown;">:
     <span style="color: #009900;">&#125;</span>
 <span style="color: #009900;">&#125;</span></pre>
 
-<h4 id="Ajout-d-un-menu">Ajout d'un menu</h4>
+<h3 id="Ajout-d-un-menu">Ajout d'un menu</h3>
 <p>Les items de menu sont enregistrés dans BigFoot via des Listeners. Cela permet à n'importe quel bundle d'enregistrer ses propres items de menu qui vont s'ajouter aux items fournis par les autres bundle.</p>
 <ul>
 <li>Créer un listener :
@@ -185,7 +185,7 @@ bigfoot_context</span><span style="font-weight: bold; color: brown;">:
 	        tags</span>:<span style="color: green;">
 	            - { name</span><span style="font-weight: bold; color: brown;">: </span>kernel.event_listener, event<span style="font-weight: bold; color: brown;">: </span>bigfoot.menu.generate, method<span style="font-weight: bold; color: brown;">: </span>onMenuGenerate <span class="br0">&#125;</span></pre>
 
-<h4 id="Stockage-des-traductions-en-base-de-donnees">Stockage des traductions en base de données</h4>
+<h3 id="Stockage-des-traductions-en-base-de-donnees">Stockage des traductions en base de données</h3>
 <p>Vous pouvez stocker en base vos entités de type Bigfoot\Bundle\CoreBundle\Entity\TranslatableLabel et en disposer en tant que traduction dans Symfony 2 :</p>
 <ul>
 <li>TranslatableLabel-&gt;domain : La portée de l'intitulé (&quot;messages&quot; en standard).
@@ -277,15 +277,17 @@ bigfoot_context</span><span style="font-weight: bold; color: brown;">:
 <a href="chapter1.html#-"></a>
 <ul class="toc-list">
 <li class="toc-entry">
+<a href="chapter1.html#-"></a>
+<ul class="toc-list">
+<li class="toc-entry">
 <a href="chapter1.html#Activateur-de-contexte">Activateur de contexte</a>
 </li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toc-entry">
-<a href="chapter1.html#-"></a>
-<ul class="toc-list">
+</ul>
+</li>
 <li class="toc-entry">
 <a href="chapter1.html#-"></a>
 <ul class="toc-list">
@@ -299,11 +301,6 @@ bigfoot_context</span><span style="font-weight: bold; color: brown;">:
 </li>
 </ul>
 </li>
-</ul>
-</li>
-<li class="toc-entry">
-<a href="chapter1.html#-"></a>
-<ul class="toc-list">
 <li class="toc-entry">
 <a href="chapter1.html#-"></a>
 <ul class="toc-list">
@@ -312,8 +309,6 @@ bigfoot_context</span><span style="font-weight: bold; color: brown;">:
 <ul class="toc-list">
 <li class="toc-entry">
 <a href="chapter1.html#Stockage-des-traductions-en-base-de-donnees">Stockage des traductions en base de données</a>
-</li>
-</ul>
 </li>
 </ul>
 </li>
