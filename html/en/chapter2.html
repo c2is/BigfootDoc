@@ -240,7 +240,14 @@ bigfoot_context</span><span style="font-weight: bold; color: brown;">:
             <span style="color: blue;"># String representation for the context.</span><span style="color: green;">
             label</span><span style="font-weight: bold; color: brown;">: </span>         <span style="color: #CF00CF;">&quot;Language&quot;</span></pre>
 
-<p>An other way exists to define &quot;contextualized&quot; entities : with annotation.</p>
+<p>Example : if you want to bind some context's values to some users, to make context field appear in user's form in back office, you have to set entities like this:</p>
+<pre class="language-yaml" style="font-family:monospace;"><span style="color: blue;"># /app/config/bigfoot.yml</span><span style="color: #007F45;">
+bigfoot_context</span><span style="font-weight: bold; color: brown;">:
+</span>    <span style="color: cyan;">...</span><span style="color: #007F45;">
+    entities</span>:<span style="color: green;">
+        - { class</span><span style="font-weight: bold; color: brown;">: </span>'Bigfoot\Bundle\UserBundle\Entity\User', contexts<span style="font-weight: bold; color: brown;">: </span><span class="br0">&#91;</span>'mycontextname'<span class="br0">&#93;</span> <span class="br0">&#125;</span></pre>
+
+<p>An other way exists to define &quot;contextualized&quot; entities : with annotation. Obviously this way is to be used only for your own entities, not for vendor entities.</p>
 <h4 id="Define-contextualized-entities-with-annotation">Define &quot;contextualized&quot; entities with annotation</h4>
 
 <pre class="language-php" style="font-family:monospace;"><span style="color: #666666; font-style: italic;"># /src/Sandbox/MovieBundle/Entity/Movie.php
