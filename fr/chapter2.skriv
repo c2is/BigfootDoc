@@ -40,7 +40,8 @@ bigfoot_context:
     entities:
         - { class: 'Bigfoot\Bundle\UserBundle\Entity\User', contexts: ['mycontextname'] }
 ]]]
-Une autre méthode existe pour définir les entitiés contextualisable : en annotation.
+Une autre méthode existe pour définir les entitiés contextualisables : en annotation.
+Cette méthode est bien entendu réservée à vos propres entités et ne doit pas être appliquée aux entités des vendors.
 ==== Définition d'entités contextualisables en annotation
 
 [[[php
