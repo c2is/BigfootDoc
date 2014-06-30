@@ -51,7 +51,7 @@ class Movie
 
 ==== Activateur de contexte
 Les activateurs de contextes doivent être placés dans le dossier ContextLoaders de votre bundle.
-Ils doivent étendre Bigfoot\Bundle\ContextBundle\Model\AbstractContextLoader et implementer la méthode getName() qui doit retourner une chaîne correspondant au nom du contexte défini dans la configuration ou l'annotation.
+Ils doivent étendre Bigfoot\Bundle\ContextBundle\Model\AbstractContextLoader et implementer la méthode getContextName() qui doit retourner une chaîne correspondant au nom du contexte défini dans la configuration ou l'annotation.
 Ils doivent également implémenter la méthode getValue() qui retourne la valeur courante du contexte. Si cette méthode retourne une valeur équivalente à false, l'activateur suivant va être appelé et ainsi de suite jusqu'au dernier activateur défini.
 Si aucune valeur n'est trouvée, c'est la valeur standard (définie dans la configuration) qui sera utilisée.
 
