@@ -32,6 +32,14 @@ bigfoot_context:
             label:          "Language"
 ]]]
 
+Exemple : si vous souhaitez associer des valeurs de votre contexte à des utilisateurs, pour que le champ contexte apparaisse en back office dans le formulaire d'édition d'un utilisateur, il faudra indiquer :
+[[[yaml
+# /app/config/bigfoot.yml
+bigfoot_context:
+    ...
+    entities:
+        - { class: 'Bigfoot\Bundle\UserBundle\Entity\User', contexts: ['mycontextname'] }
+]]]
 Une autre méthode existe pour définir les entitiés contextualisable : en annotation.
 ==== Définition d'entités contextualisables en annotation
 
