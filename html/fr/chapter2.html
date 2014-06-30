@@ -61,6 +61,12 @@ bigfoot_context</span><span style="font-weight: bold; color: brown;">:
             <span style="color: blue;"># Intitulé de ce contexte.</span><span style="color: green;">
             label</span><span style="font-weight: bold; color: brown;">: </span>         <span style="color: #CF00CF;">&quot;Language&quot;</span></pre>
 
+<p>Exemple : si vous souhaitez associer des valeurs de votre contexte à des utilisateurs, pour que le champ contexte apparaisse en back office dans le formulaire d'édition d'un utilisateur, il faudra indiquer :</p>
+<pre class="language-yaml" style="font-family:monospace;"><span style="color: blue;"># /app/config/bigfoot.yml</span><span style="color: #007F45;">
+bigfoot_context</span><span style="font-weight: bold; color: brown;">:
+</span>    <span style="color: cyan;">...</span><span style="color: #007F45;">
+    entities</span>:<span style="color: green;">
+        - { class</span><span style="font-weight: bold; color: brown;">: </span>'Bigfoot\Bundle\UserBundle\Entity\User', contexts<span style="font-weight: bold; color: brown;">: </span><span class="br0">&#91;</span>'mycontextname'<span class="br0">&#93;</span> <span class="br0">&#125;</span></pre>
 <p>Une autre méthode existe pour définir les entitiés contextualisable : en annotation.</p>
 <h4 id="Definition-d-entites-contextualisables-en-annotation">Définition d'entités contextualisables en annotation</h4>
 
