@@ -50,7 +50,7 @@ class Movie
 ]]]
 ==== Context loaders
 Context loaders must be placed in the ContextLoaders/ folder in your bundle.
-They must extend Bigfoot\Bundle\ContextBundle\Model\AbstractContextLoader and implement the methodes getName() (returns a string corresponding to the name of one of the contexts in the bundle configuration) and getValue() (returns the current value for the context).
+They must extend Bigfoot\Bundle\ContextBundle\Model\AbstractContextLoader and implement the methods getContextName() (returns a string corresponding to the name of one of the contexts in the bundle configuration) and getValue() (returns the current value for the context).
 If a context loader returns a false equivalent value, the next loader will be called, until all loaders have been called. If no context value is found, the default_value set in the bundle configuration for that context will be used.
 
 Example : a context loader which compute the context value from the current subdomain.
