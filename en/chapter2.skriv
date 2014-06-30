@@ -32,7 +32,16 @@ bigfoot_context:
             label:          "Language"
 ]]]
 
-An other way exists to define "contextualized" entities : with annotation.
+Example : if you want to bind some context's values to some users, to make context field appear in user's form in back office, you have to set entities like this:
+[[[yaml
+# /app/config/bigfoot.yml
+bigfoot_context:
+    ...
+    entities:
+        - { class: 'Bigfoot\Bundle\UserBundle\Entity\User', contexts: ['mycontextname'] }
+]]]
+
+An other way exists to define "contextualized" entities : with annotation. Obviously this way is to be used only for your own entities, not for vendor entities.
 ==== Define "contextualized" entities with annotation
 
 [[[php
